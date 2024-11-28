@@ -1,12 +1,19 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class calculateTimetable {
   public static void main(String[] args) {
-    
+    //Check if the path is set
+    if(args.length == 0) {
+      System.out.println("Please add the folder path!");
+      System.exit(0);
+    }
+
     //Get the data from the InstanzX folders
     String folderPath = args[0]; 
     int[][][] data = readFiles(folderPath);
@@ -23,8 +30,14 @@ public class calculateTimetable {
       System.out.println(edge);
     }*/
     Graph graph = new Graph(nodes, edges);
-    System.out.println(graph);
+    //System.out.println(graph);
 
+    int minColor = graph.minColorBacktracking();
+    System.out.println(minColor);
+    minColor = graph.minColorJohnson();
+    System.out.println(minColor);
+    minColor = graph.minColorSequential();
+    System.out.println(minColor);
   }
 
   //This method reads the datafiles D.txt, R.txt, S.txt from a folderPath and returns a array containing the data
@@ -32,7 +45,8 @@ public class calculateTimetable {
     String[] fileNames = {"D.txt", "R.txt", "S.txt"};
     int[][][] data = new int[3][][];
     for(int i = 0; i < data.length; i++) {
-      try (BufferedReader reader = new BufferedReader(new FileReader(folderPath + "\\" + fileNames[i]))) {
+      Path filePath = Paths.get(folderPath, fileNames[i]);
+      try (BufferedReader reader = new BufferedReader(new FileReader(filePath.toString()))) {
         String line;
         ArrayList<String> lines = new ArrayList<>();
         while ((line = reader.readLine()) != null) {
