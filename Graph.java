@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.Collections;
 
@@ -15,9 +16,9 @@ public class Graph {
     }
 
     public Graph(List<Node> nodes, List<Edge> edges) {
-      this.nodes = nodes;
-      this.edges = edges;
-      this.minColor = null;
+        this.nodes = nodes;
+        this.edges = edges;
+        this.minColor = null;
     }
 
     public List<Node> getNodes() {
@@ -80,7 +81,7 @@ public class Graph {
         ArrayList<Integer> allColors = new ArrayList<Integer>();
         for (Node node : nodes) {
             ArrayList<Integer> colors = new ArrayList<Integer>(allColors);
-            colors.removeAll(getNeighbors(node).stream().map(Node::getColor).collect(Collectors.toSet()));
+            colors.removeAll(node.getNeighbors().stream().map(Node::getColor).collect(Collectors.toSet())); //Entfernt alle Farben, die bereits vom Nachbarn blockiert werden
             if (colors.size() == 0) {
                 setMinColor(getMinColor() + 1);
                 allColors.add(getMinColor());
@@ -94,45 +95,49 @@ public class Graph {
 
     public int minColorJohnson() {
         resetColoring();
-        ArrayList<Node> nodesW = new ArrayList<Node>(nodes);
+        ArrayList<Node> nodesW = new ArrayList<Node>(nodes); //Kopie von Nodes für äußere Schleife
+        HashMap<Node, Integer> updateDegreesW = new HashMap<Node, Integer>(); // Hashmap mit Knotengraden der äußeren Schleife
+        for (Node node : nodesW) {
+            updateDegreesW.put(node, node.getDegree());
+        }
         while (nodesW.size() > 0) {
-            setMinColor(getMinColor() + 1);;
-            ArrayList<Node> nodesU = new ArrayList<Node>(nodesW);
+            setMinColor(getMinColor() + 1);
+            ArrayList<Node> nodesU = new ArrayList<Node>(nodesW); // Kopie von Nodes für innere Schleife
+            HashMap<Node, Integer> updateDegreesU = new HashMap<Node, Integer>(updateDegreesW); // Hashmap mit Knotengraden der inneren Schleife
             while (nodesU.size() > 0) {
-               Node minDegree = getMinDegree(nodesU); 
-               minDegree.setColor(getMinColor());
-               nodesU.remove(minDegree);
-               nodesU.removeAll(getNeighbors(minDegree));
-               nodesW.remove(minDegree);
+                /*System.out.println("New Iteration:");
+                for (Node nodeU : nodesU) {
+                    System.out.println(nodeU + "Min-Degree: " + updateDegreesU.get(nodeU));
+                }*/
+                Node minDegree = null;
+                for (Node nodeU : nodesU) { // Hole den Knoten mit dem minimalen Grad
+                    if (minDegree == null || updateDegreesU.get(nodeU) < updateDegreesU.get(minDegree)) {
+                        minDegree = nodeU;
+                    }
+                }
+                minDegree.setColor(getMinColor());
+                ArrayList<Node> neighbors = minDegree.getNeighbors();
+                for (Node neighbor : neighbors) { // Degree der Nachbarn in W und U runtersetzen, weil u aus U und W rausfliegt
+                    updateDegreesW.put(neighbor, updateDegreesW.get(neighbor) - 1); // In W immer runtersetzen, da u aus W entfernt wird
+                    updateDegreesU.put(neighbor, updateDegreesU.get(neighbor) - 1);
+                    if (nodesU.contains(neighbor)) { // Nur umsetzen, wenn Nachbar in U noch existiert
+                        updateDegreesU.put(neighbor, updateDegreesU.get(neighbor) - 1); 
+                        for (Node secondNeighbor : neighbor.getNeighbors()) {
+                            if (nodesU.contains(secondNeighbor)) {
+                                updateDegreesU.put(secondNeighbor, updateDegreesU.get(secondNeighbor) - 1); // Degree, der Nachbars Nachbarn von u in U runtersetzen, da die Nachbarn von u auch aus U rausfliegen
+                            } 
+                        }
+                    }
+                }
+                nodesU.remove(minDegree); 
+                nodesU.removeAll(neighbors);
+                nodesW.remove(minDegree);
             }
-        } 
+        }
         return getMinColor();
     }
 
-    private ArrayList<Node> getNeighbors(Node node) {
-        ArrayList<Node> neighbors = new ArrayList<Node>();
-        for (Edge edge : this.edges) {
-            if (node.equals(edge.getV())) {
-                neighbors.add(edge.getU());
-            } else if (node.equals(edge.getU())) {
-                neighbors.add(edge.getV());
-            }
-        }
-        return neighbors;
-    }
-
-    private Node getMinDegree(ArrayList<Node> nodes) {
-        Node minDegree = null;
-        for(Node node : nodes) {
-           if(minDegree == null || node.getDegree() < minDegree.getDegree()) {
-                minDegree = node;
-           } 
-        } 
-        return minDegree;
-    }
-
-
-    //Hier noch verstehen!
+    // Hier noch verstehen!
     public int minColorBacktracking() {
         int numNodes = nodes.size();
         int[] colors = new int[numNodes];
@@ -205,5 +210,3 @@ public class Graph {
         return maxColor;
     }
 }
-    
-
