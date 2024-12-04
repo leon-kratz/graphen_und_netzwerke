@@ -114,6 +114,10 @@ public class Node {
     neighbors.remove(node);
   }
 
+  public boolean hasNeighbor(Node node) {
+    return neighbors.contains(node);
+  }
+
   @Override
   public String toString() {
     return "Node{" +

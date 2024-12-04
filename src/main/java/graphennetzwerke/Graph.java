@@ -1,6 +1,9 @@
 package graphennetzwerke;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.Collections;
@@ -209,5 +212,162 @@ public class Graph {
             }
         }
         return maxColor;
+    }
+
+    //================ NIKLAS ================
+    /**
+     * Requires: einfacher ungerichteter Graph G = (V, E)
+     * Knoten haben die Werte von 0 bis n-1.
+     * coloring speichert die aktuelle Färbung der Teillösung
+     * maximum speichert die maximale Anzahl an zu verwendenden Teilmengen.
+     * limit beschreibt die kleinste gefundene Lösung
+     * 
+     * @return The number of colors needed.
+     */
+    public int backtracking() {
+        resetColoring();
+        Instant start = Instant.now();
+
+        AtomicInteger limit = new AtomicInteger(nodes.size() - 1);
+        int[] maximum = new int[nodes.size()];
+        for (int i = 0; i < maximum.length; i++) {
+            maximum[i] = limit.get();
+        }
+        
+        nodes.get(0).setColor(0);
+        maximum[0] = 0;
+
+        partition(0, maximum, limit);
+
+        Instant end = Instant.now();
+        System.out.println("Elapsed time: " + Duration.between(start, end).toString());
+
+        this.minColor = limit.get() + 1;
+        return this.minColor;
+    }
+
+    private void partition(int k, int[] maximum, AtomicInteger limit) {
+        int n = nodes.size();
+        if (increaseSubsolution(k)) {
+            do {
+                if (correctSubsolution(k + 1)) {
+                    maximum[k + 1] = Math.max(nodes.get(k + 1).getColor(), maximum[k]);
+                    if (k + 1 == n - 1) {
+                        limit.set(maximum[k + 1]);
+                    } else {
+                        partition(k + 1, maximum, limit);
+                    }
+                }
+            } while (varySubsolution(k + 1, maximum, limit));
+        }
+    }
+
+    private boolean increaseSubsolution(int k) {
+        int n = nodes.size();
+        if (k == n - 1) {
+            return false;
+        }
+
+        nodes.get(k + 1).setColor(0);
+        return true;
+    }
+
+    private boolean correctSubsolution(int k) {
+        for (int j = 0; j < k; j++) {
+            Node u = nodes.get(j);
+            Node v = nodes.get(k);
+
+            // eigentlich reicht, u.hasNeighbor, weil ungerichteter Graph!
+            if (u.getColor() == v.getColor() && (u.hasNeighbor(v) || v.hasNeighbor(u))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean varySubsolution(int k, int[] maximum, AtomicInteger limit) {
+        Node node = nodes.get(k);
+        if (node.getColor() >= Math.min(maximum[k - 1] + 1, limit.get())) {
+            return false;
+        }
+
+        node.setColor(node.getColor() + 1);
+        return true;
+    }
+
+    public int backtracking_pseudo() {
+        Instant start = Instant.now();
+
+        AtomicInteger limit = new AtomicInteger(nodes.size() - 1);
+        int[] maximum = new int[nodes.size()];
+        int[] coloring = new int[nodes.size()];
+        for (int i = 0; i < maximum.length; i++) {
+            maximum[i] = limit.get();
+        }
+        
+        coloring[0] = 0;
+        maximum[0] = 0;
+
+        partition_pseudo(0, maximum, coloring, limit);
+
+        Instant end = Instant.now();
+        System.out.println("Elapsed time: " + Duration.between(start, end).toString());
+
+        for (int i = 0; i < nodes.size(); i++) {
+            nodes.get(i).setColor(coloring[i]);
+        }
+
+        this.minColor = limit.get() + 1;
+        return this.minColor;
+    }
+
+    private void partition_pseudo(int k, int[] maximum, int[] coloring, AtomicInteger limit) {
+        int n = nodes.size();
+        if (increaseSubsolution_pseudo(k, coloring)) {
+            do {
+                if (correctSubsolution_pseudo(k + 1, coloring)) {
+                    maximum[k + 1] = Math.max(coloring[k + 1], maximum[k]);
+                    if (k + 1 == n - 1) {
+                        limit.set(maximum[k + 1]);
+                    } else {
+                        partition_pseudo(k + 1, maximum, coloring, limit);
+                    }
+                }
+            } while (varySubsolution_pseudo(k + 1, coloring, maximum, limit));
+        }
+    }
+
+    private boolean increaseSubsolution_pseudo(int k, int[] coloring) {
+        int n = nodes.size();
+        if (k == n - 1) {
+            return false;
+        }
+
+        coloring[k + 1] = 0;
+        return true;
+    }
+
+    private boolean correctSubsolution_pseudo(int k, int[] coloring) {
+        for (int j = 0; j < k; j++) {
+            Node u = nodes.get(j);
+            Node v = nodes.get(k);
+
+            // eigentlich reicht, u.hasNeighbor, weil ungerichteter Graph!
+            if (coloring[j] == coloring[k] && (u.hasNeighbor(v) || v.hasNeighbor(u))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean varySubsolution_pseudo(int k, int[] coloring, int[] maximum, AtomicInteger limit) {
+        if (coloring[k] >= Math.min(maximum[k - 1] + 1, limit.get())) {
+            return false;
+        }
+
+        coloring[k]++;
+        return true;
     }
 }

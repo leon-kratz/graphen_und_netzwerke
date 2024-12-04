@@ -17,45 +17,54 @@ public class CalculateTimetable {
 
     // Get the data from the InstanzX folders
     // String folderPath = args[0];
-    String folderPath = "Testinstanzen\\Instanz1";
-    int[][][] data = readFiles(folderPath);
-    /*
-     * for(int i = 0; i < 3; i++) {
-     * System.out.println(Arrays.deepToString(data[i]));
-     * }
-     */
+    for (int i = 1; i <= 5; i++) {
+      String folderPath = Paths.get(".", "Testinstanzen", "Instanz" + i).toString();
+      System.out.println("Testinstanz " + i);
+      int[][][] data = readFiles(folderPath);
+      /*
+      * for(int i = 0; i < 3; i++) {
+      * System.out.println(Arrays.deepToString(data[i]));
+      * }
+      */
 
-    ArrayList<Node> nodes = getNodes(data);
-    /*
-     * for(Node node : nodes) {
-     * System.out.println(node);
-     * }
-     */
-    ArrayList<Edge> edges = getEdges(nodes);
-    /*
-     * for(Edge edge : edges) {
-     * System.out.println(edge);
-     * }
-     */
-    Graph graph = new Graph(nodes, edges);
-    // System.out.println(graph);
+      ArrayList<Node> nodes = getNodes(data);
+      /*
+      * for(Node node : nodes) {
+      * System.out.println(node);
+      * }
+      */
+      ArrayList<Edge> edges = getEdges(nodes);
+      /*
+      * for(Edge edge : edges) {
+      * System.out.println(edge);
+      * }
+      */
+      Graph graph = new Graph(nodes, edges);
+      // System.out.println(graph);
 
-    int minColor = graph.minColorBacktracking();
-    System.out.println(minColor);
-    minColor = graph.minColorJohnson();
-    System.out.println(minColor);
-    minColor = graph.minColorSequential();
-    System.out.println(minColor);
+      int minColor = graph.minColorBacktracking();
+      System.out.println("backtracking: " + minColor);
+      minColor = graph.minColorJohnson();
+      System.out.println("johnson: " + minColor);
+      minColor = graph.minColorSequential();
+      System.out.println("squential: " + minColor);
 
-    // checkBipartite();
+      System.out.println("backtracking2: " + graph.backtracking_pseudo());
 
-    // Visualize Graph
-    GraphVisualization graphVisualization = new GraphVisualization();
-    graphVisualization.visualizeGraph(graph);
+      // checkBipartite();
 
-    // Visualize Timetable
-    TimetableVisualization timetableVisualization = new TimetableVisualization();
-    timetableVisualization.generateTimetable(graph);
+      // Visualize Graph
+      // GraphVisualization graphVisualization = new GraphVisualization();
+      // graphVisualization.visualizeGraph(graph);
+
+      // Visualize Timetable
+      // TimetableVisualization timetableVisualization = new TimetableVisualization();
+      // timetableVisualization.generateTimetable(graph);
+
+      if (i < 5) {
+        System.out.println();
+      }
+    }
   }
 
   // This method reads the datafiles D.txt, R.txt, S.txt from a folderPath and
