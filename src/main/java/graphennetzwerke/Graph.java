@@ -226,7 +226,7 @@ public class Graph {
      */
     public int backtracking() {
         resetColoring();
-        Instant start = Instant.now();
+        //Instant start = Instant.now();
 
         AtomicInteger limit = new AtomicInteger(nodes.size() - 1);
         int[] maximum = new int[nodes.size()];
@@ -239,8 +239,8 @@ public class Graph {
 
         partition(0, maximum, limit);
 
-        Instant end = Instant.now();
-        System.out.println("Elapsed time: " + Duration.between(start, end).toString());
+        //Instant end = Instant.now();
+        //System.out.println("Elapsed time: " + Duration.between(start, end).toString());
 
         this.minColor = limit.get() + 1;
         return this.minColor;
@@ -297,7 +297,7 @@ public class Graph {
     }
 
     public int backtracking_pseudo() {
-        Instant start = Instant.now();
+        //Instant start = Instant.now();
 
         AtomicInteger limit = new AtomicInteger(nodes.size() - 1);
         int[] maximum = new int[nodes.size()];
@@ -306,13 +306,12 @@ public class Graph {
             maximum[i] = limit.get();
         }
         
-        coloring[0] = 0;
-        maximum[0] = 0;
-
+        coloring[0] = maximum[0] = 0;
+        
         partition_pseudo(0, maximum, coloring, limit);
 
-        Instant end = Instant.now();
-        System.out.println("Elapsed time: " + Duration.between(start, end).toString());
+        //Instant end = Instant.now();
+        //System.out.println("Elapsed time: " + Duration.between(start, end).toString());
 
         for (int i = 0; i < nodes.size(); i++) {
             nodes.get(i).setColor(coloring[i]);
