@@ -17,7 +17,7 @@ public class CalculateTimetable {
 
     // Get the data from the InstanzX folders
     // String folderPath = args[0];
-    String folderPath = "Testinstanzen\\Instanz5";
+    String folderPath = "Testinstanzen\\Instanz4";
     int[][][] data = readFiles(folderPath);
     /*
      * for(int i = 0; i < 3; i++) {

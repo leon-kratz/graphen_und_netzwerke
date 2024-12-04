@@ -8,10 +8,13 @@ import javax.swing.JFrame;
 import org.jgrapht.Graph;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 import org.jgrapht.graph.builder.GraphTypeBuilder;
 import org.jgrapht.util.SupplierUtil;
 
 import com.mxgraph.layout.mxCircleLayout;
+import com.mxgraph.layout.mxOrganicLayout;
+import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.model.mxICell;
 import com.mxgraph.swing.mxGraphComponent;
 
@@ -29,13 +32,17 @@ public class GraphVisualization {
 	}
 
 	public void visualizeGraph(graphennetzwerke.Graph graphToVisualize) {
+		// Graph Builder
 		Graph<String, DefaultEdge> graph = GraphTypeBuilder
-		.directed()
+		.undirected()
 		.allowingMultipleEdges(true)
 		.allowingSelfLoops(true)
 		.vertexSupplier(SupplierUtil.createStringSupplier())
 		.edgeSupplier(SupplierUtil.createDefaultEdgeSupplier())
 		.buildGraph();
+
+		//Simple Graph
+		// Graph<String, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
 
 		// Mapping for Nodes and Vertices
 		Map<Node, String> nodeMap = new HashMap<>();
@@ -58,14 +65,20 @@ public class GraphVisualization {
 		// JGraphX-Adapter
 		JGraphXAdapter<String, DefaultEdge> graphAdapter = new JGraphXAdapter<>(graph);
 
+		// Edge style
+		for (Object edge : graphAdapter.getEdgeToCellMap().values()) {
+			// Remove label
+			((mxICell) edge).setValue("");
+			// Remove arrow
+			graphAdapter.setCellStyle("endArrow=none;", new Object[]{edge});
+		}
+
 		// Color graph
 		Map<String, mxICell> vertexToCellMap = graphAdapter.getVertexToCellMap();
-		int index = 0;
         for (String vertex : graph.vertexSet()) {
 			Node node = vertexMap.get(vertex);
             String color = colors[node.getColor()]; // Zyklische Farbzuweisung
             graphAdapter.setCellStyle("fillColor=" + color, new mxICell[]{vertexToCellMap.get(vertex)});
-            index++;
         }
 
 		// JFrame für die Visualisierung
@@ -76,9 +89,16 @@ public class GraphVisualization {
 		mxGraphComponent graphComponent = new mxGraphComponent(graphAdapter);
 		frame.add(graphComponent);
 
-		// Layout für den Graphen
-		mxCircleLayout layout = new mxCircleLayout(graphAdapter);
-		layout.execute(graphAdapter.getDefaultParent());
+		// Layout for the Graph
+		// Circle Layout
+		// mxCircleLayout layout = new mxCircleLayout(graphAdapter);
+		// layout.execute(graphAdapter.getDefaultParent());
+		// Organic Layout
+        mxOrganicLayout layout = new mxOrganicLayout(graphAdapter);
+        layout.execute(graphAdapter.getDefaultParent());
+		// Hierachical Layout
+		// mxHierarchicalLayout layout = new mxHierarchicalLayout(graphAdapter);
+        // layout.execute(graphAdapter.getDefaultParent());
 
 		frame.setVisible(true);
 	}
