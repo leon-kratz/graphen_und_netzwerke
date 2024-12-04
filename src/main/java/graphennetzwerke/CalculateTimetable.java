@@ -52,6 +52,7 @@ public class CalculateTimetable {
             return;
         }
         // System.out.println(graph);
+        // System.out.println(Arrays.deepToString(graph.getAdjacencyMatrix()));
 
         int minColor = graph.minColorBacktracking();
         System.out.println("backtracking: " + minColor);
@@ -60,7 +61,7 @@ public class CalculateTimetable {
         minColor = graph.minColorSequential();
         System.out.println("squential: " + minColor);
 
-        System.out.println("backtracking2: " + graph.backtracking_pseudo());
+        System.out.println("backtracking2: " + graph.backtracking());
 
         if (visualize == false) {
             return;
