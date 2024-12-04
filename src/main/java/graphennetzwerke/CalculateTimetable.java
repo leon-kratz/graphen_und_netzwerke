@@ -17,7 +17,7 @@ public class CalculateTimetable {
 
     // Get the data from the InstanzX folders
     // String folderPath = args[0];
-    String folderPath = "Testinstanzen\\Instanz4";
+    String folderPath = "Testinstanzen\\Instanz1";
     int[][][] data = readFiles(folderPath);
     /*
      * for(int i = 0; i < 3; i++) {
@@ -52,6 +52,10 @@ public class CalculateTimetable {
     // Visualize Graph
     GraphVisualization graphVisualization = new GraphVisualization();
     graphVisualization.visualizeGraph(graph);
+
+    // Visualize Timetable
+    TimetableVisualization timetableVisualization = new TimetableVisualization();
+    timetableVisualization.generateTimetable(graph);
   }
 
   // This method reads the datafiles D.txt, R.txt, S.txt from a folderPath and

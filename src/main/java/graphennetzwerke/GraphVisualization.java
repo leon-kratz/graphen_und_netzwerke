@@ -1,7 +1,11 @@
 package graphennetzwerke;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 import javax.swing.JFrame;
 
@@ -49,10 +53,13 @@ public class GraphVisualization {
 		Map<String, Node> vertexMap = new HashMap<>();
 
 		// Create Vertices
+		int index = 1;
 		for (Node node : graphToVisualize.getNodes()) {
-			String v = graph.addVertex();
+			String v = Integer.toString(index);
+			graph.addVertex(v);
 			nodeMap.put(node, v);
 			vertexMap.put(v, node);
+			index++;
 		}
 
 		// Create Edges
