@@ -61,8 +61,6 @@ public class CalculateTimetable {
         minColor = graph.minColorSequential();
         System.out.println("squential: " + minColor);
 
-        System.out.println("backtracking2: " + graph.backtracking());
-
         if (visualize == false) {
             return;
         }
