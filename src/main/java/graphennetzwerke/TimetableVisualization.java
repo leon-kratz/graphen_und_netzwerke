@@ -11,15 +11,14 @@ import java.util.stream.Collectors;
 public class TimetableVisualization {
     // Timeslots
     List<String> fullTimeSlots = List.of(
-        "Mo 08:00-11:00", "Mo 11:30-14:30", "Mo 15:00-18:00",
-        "Di 08:00-11:00", "Di 11:30-14:30", "Di 15:00-18:00",
-        "Mi 08:00-11:00", "Mi 11:30-14:30", "Mi 15:00-18:00",
-        "Do 08:00-11:00", "Do 11:30-14:30", "Do 15:00-18:00",
-        "Fr 08:00-11:00", "Fr 11:30-14:30", "Fr 15:00-18:00"
-    );
+            "Mo 08:00-11:00", "Mo 11:30-14:30", "Mo 15:00-18:00",
+            "Di 08:00-11:00", "Di 11:30-14:30", "Di 15:00-18:00",
+            "Mi 08:00-11:00", "Mi 11:30-14:30", "Mi 15:00-18:00",
+            "Do 08:00-11:00", "Do 11:30-14:30", "Do 15:00-18:00",
+            "Fr 08:00-11:00", "Fr 11:30-14:30", "Fr 15:00-18:00");
 
-    String[] days = {"Mo", "Di", "Mi", "Do", "Fr"};
-    String[] timeSlots = {"08:00-11:00", "11:30-14:30", "15:00-18:00"};
+    String[] days = { "Mo", "Di", "Mi", "Do", "Fr" };
+    String[] timeSlots = { "08:00-11:00", "11:30-14:30", "15:00-18:00" };
 
     public TimetableVisualization() {
     }
@@ -27,13 +26,12 @@ public class TimetableVisualization {
     private Map<Integer, List<Integer>> createColorNodeMap(List<Node> nodes) {
         // Map Color to Node (for every color a list with the related nodes)
         return nodes.stream()
-            .collect(Collectors.groupingBy(
-                    Node::getColor,                   // Group by color
-                    Collectors.mapping(               // Map Node numbers
-                            Node::getName,            // Node-Name as Integer
-                            Collectors.toList()       // Collect as List
-                    )
-            ));
+                .collect(Collectors.groupingBy(
+                        Node::getColor, // Group by color
+                        Collectors.mapping( // Map Node numbers
+                                Node::getName, // Node-Name as Integer
+                                Collectors.toList() // Collect as List
+                        )));
     }
 
     public void generateTimetable(graphennetzwerke.Graph graph) {
@@ -69,7 +67,6 @@ public class TimetableVisualization {
         visualizeTimetable(colorToTimeSlot, blockModules);
     }
 
-    
     public void visualizeTimetable(Map<Integer, String> colorToTimeSlot, Map<Integer, List<Integer>> blockModules) {
         // Prepare table
         String[] columns = new String[days.length + 1];
@@ -97,8 +94,8 @@ public class TimetableVisualization {
 
             // Modules/Nodes for this block
             List<String> modules = blockModules.getOrDefault(color, List.of()).stream()
-                .map(String::valueOf)
-                .collect(Collectors.toList());
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
 
             // Write to cel
             if (data[row][col] == null) {
