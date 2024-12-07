@@ -97,6 +97,13 @@ public class Graph {
         }
     }
 
+    /**
+    * Requires: einfacher ungerichteter Graph G = (V, E)
+    * Durchläuft Knoten und entfernt Farben der Nachbarn aus Farbmenge allColors
+    * Bestimmt Färbung der Knoten mithilfe der übrigen Farbmenge
+    *
+    * @return  Anzahl an benötigten Farben berechnet mit Johnson Algorithmus
+    */
     public int minColorSequential() {
         resetColoring();
         ArrayList<Integer> allColors = new ArrayList<Integer>();
@@ -113,7 +120,13 @@ public class Graph {
         }
         return getMinColor();
     }
-
+    
+     /**
+     * Requires: einfacher ungerichteter Graph G = (V, E)
+     * Durchläuft Knoten und bestimmt Farben mithilfe des Knotengrades der Knotenmenge W und der Knotenmenge U basierend auf W
+     * 
+     * @return Anzahl an benötigten Farben berechnet mit sequenziellen Algorithmus
+     */
     public int minColorJohnson() {
         resetColoring();
         ArrayList<Node> nodesW = new ArrayList<Node>(nodes); //Kopie von Nodes für äußere Schleife
