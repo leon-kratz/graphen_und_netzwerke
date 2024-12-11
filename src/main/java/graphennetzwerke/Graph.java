@@ -11,18 +11,15 @@ import java.util.Collections;
 public class Graph {
     private List<Node> nodes;
     private List<Edge> edges;
-    private Integer minColor;
 
     public Graph() {
         this.nodes = new ArrayList<>();
         this.edges = new ArrayList<>();
-        this.minColor = null;
     }
 
     public Graph(List<Node> nodes, List<Edge> edges) {
         this.nodes = nodes;
         this.edges = edges;
-        this.minColor = null;
     }
 
     public List<Node> getNodes() {
@@ -39,14 +36,6 @@ public class Graph {
 
     public void setEdges(List<Edge> edges) {
         this.edges = edges;
-    }
-
-    public Integer getMinColor() {
-        return minColor;
-    }
-
-    public void setMinColor(Integer minColor) {
-        this.minColor = minColor;
     }
 
     public void addNode(Node node) {
@@ -86,12 +75,10 @@ public class Graph {
         for (Edge edge : edges) {
             sb.append(edge).append("\n");
         }
-        sb.append("MinColor: ").append(minColor).append("\n");
         return sb.toString();
     }
 
     private void resetColoring() {
-        this.setMinColor(0);
         for (int i = 0; i < nodes.size(); i++) {
             nodes.get(i).setColor(null);
         }
@@ -107,18 +94,19 @@ public class Graph {
     public int minColorSequential() {
         resetColoring();
         ArrayList<Integer> allColors = new ArrayList<Integer>();
+        int minColor = 0;
         for (Node node : nodes) {
             ArrayList<Integer> colors = new ArrayList<Integer>(allColors);
             colors.removeAll(node.getNeighbors().stream().map(Node::getColor).collect(Collectors.toSet())); //Entfernt alle Farben, die bereits vom Nachbarn blockiert werden
             if (colors.size() == 0) {
-                setMinColor(getMinColor() + 1);
-                allColors.add(getMinColor());
-                node.setColor(getMinColor());
+                minColor += 1;
+                allColors.add(minColor);
+                node.setColor(minColor);
             } else {
                 node.setColor(Collections.min(colors));
             }
         }
-        return getMinColor();
+        return minColor;
     }
     
      /**
@@ -134,8 +122,9 @@ public class Graph {
         for (Node node : nodesW) {
             updateDegreesW.put(node, node.getDegree());
         }
+        int minColor = 0;
         while (nodesW.size() > 0) {
-            setMinColor(getMinColor() + 1);
+            minColor += 1;
             ArrayList<Node> nodesU = new ArrayList<Node>(nodesW); // Kopie von Nodes für innere Schleife
             HashMap<Node, Integer> updateDegreesU = new HashMap<Node, Integer>(updateDegreesW); // Hashmap mit Knotengraden der inneren Schleife
             while (nodesU.size() > 0) {
@@ -149,7 +138,7 @@ public class Graph {
                         minDegree = nodeU;
                     }
                 }
-                minDegree.setColor(getMinColor());
+                minDegree.setColor(minColor);
                 ArrayList<Node> neighbors = minDegree.getNeighbors();
                 for (Node neighbor : neighbors) { // Degree der Nachbarn in W und U runtersetzen, weil u aus U und W rausfliegt
                     updateDegreesW.put(neighbor, updateDegreesW.get(neighbor) - 1); // In W immer runtersetzen, da u aus W entfernt wird
@@ -168,7 +157,7 @@ public class Graph {
                 nodesW.remove(minDegree);
             }
         }
-        return getMinColor();
+        return minColor;
     }
 
     /**
@@ -191,8 +180,7 @@ public class Graph {
         maximum[0] = 0;
 
         partition(0, coloring, maximum, limit);
-        this.minColor = limit.get() + 1;
-        return this.minColor;
+        return limit.get() + 1;
     }
 
     private void partition(int k, int[] coloring, int[] maximum, AtomicInteger limit) {

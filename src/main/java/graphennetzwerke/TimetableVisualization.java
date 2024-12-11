@@ -34,7 +34,7 @@ public class TimetableVisualization {
                         )));
     }
 
-    public void generateTimetable(graphennetzwerke.Graph graph) {
+    public void generateTimetable(graphennetzwerke.Graph graph, int minColor) {
         // Map Color/Block to Node number/Module
         Map<Integer, List<Integer>> blockModules = createColorNodeMap(graph.getNodes());
 
@@ -49,7 +49,7 @@ public class TimetableVisualization {
         Random random = new Random();
         Set<String> usedSlots = new HashSet<>();
 
-        for (int color = 1; color < (graph.getMinColor() + 1); color++) {
+        for (int color = 1; color < (minColor + 1); color++) {
             String timeSlot;
             do {
                 timeSlot = fullTimeSlots.get(random.nextInt(fullTimeSlots.size()));
