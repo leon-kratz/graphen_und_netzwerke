@@ -37,14 +37,11 @@ public class GraphVisualization {
                 .vertexSupplier(SupplierUtil.createStringSupplier())
                 .edgeSupplier(SupplierUtil.createDefaultEdgeSupplier())
                 .buildGraph();
-
-        // Simple Graph
-        // Graph<String, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
-
+    
         // Mapping for Nodes and Vertices
         Map<Node, String> nodeMap = new HashMap<>();
         Map<String, Node> vertexMap = new HashMap<>();
-
+    
         // Create Vertices
         int index = 1;
         for (Node node : graphToVisualize.getNodes()) {
@@ -54,54 +51,59 @@ public class GraphVisualization {
             vertexMap.put(v, node);
             index++;
         }
-
+    
         // Create Edges
         for (Edge edge : graphToVisualize.getEdges()) {
             String u = nodeMap.get(edge.getU());
             String v = nodeMap.get(edge.getV());
             graph.addEdge(u, v);
         }
-
+    
         // JGraphX-Adapter
         JGraphXAdapter<String, DefaultEdge> graphAdapter = new JGraphXAdapter<>(graph);
-
+    
         // Edge style
         for (Object edge : graphAdapter.getEdgeToCellMap().values()) {
-            // Remove label
-            ((mxICell) edge).setValue("");
-            // Remove arrow
-            graphAdapter.setCellStyle("endArrow=none;", new Object[] { edge });
+            ((mxICell) edge).setValue(""); // Remove label
+            graphAdapter.setCellStyle("endArrow=none;strokeColor=black;", new Object[] { edge }); // Set edge color to black
         }
-
-        // Color graph
+    
+        // Set Node style to Circle with fixed size
+        int nodeSize = 40; // Einheitliche Größe für alle Kreise
         Map<String, mxICell> vertexToCellMap = graphAdapter.getVertexToCellMap();
         for (String vertex : graph.vertexSet()) {
             Node node = vertexMap.get(vertex);
             String color = colors[node.getColor()]; // Zyklische Farbzuweisung
-            graphAdapter.setCellStyle("fillColor=" + color, new mxICell[] { vertexToCellMap.get(vertex) });
+    
+            // Set style to circular nodes with fixed size
+            graphAdapter.setCellStyle(
+                "shape=ellipse;fillColor=" + color + ";strokeColor=black;perimeter=ellipsePerimeter;" +
+                "fontSize=14;fontStyle=1;fontColor=black;",
+                new mxICell[]{vertexToCellMap.get(vertex)}
+            );
+    
+            // Set fixed size for the vertex
+            mxICell cell = vertexToCellMap.get(vertex);
+            graphAdapter.getModel().setGeometry(cell, new com.mxgraph.model.mxGeometry(0, 0, nodeSize, nodeSize));
         }
-
+    
         // JFrame für die Visualisierung
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Graph");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
-
+    
         mxGraphComponent graphComponent = new mxGraphComponent(graphAdapter);
         frame.add(graphComponent);
-
+    
         // Layout for the Graph
-        // Circle Layout
-        // mxCircleLayout layout = new mxCircleLayout(graphAdapter);
-        // layout.execute(graphAdapter.getDefaultParent());
-        // Organic Layout
         mxOrganicLayout layout = new mxOrganicLayout(graphAdapter);
         layout.execute(graphAdapter.getDefaultParent());
-        // Hierachical Layout
-        // mxHierarchicalLayout layout = new mxHierarchicalLayout(graphAdapter);
-        // layout.execute(graphAdapter.getDefaultParent());
-
+    
+        // JFrame
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
     }
+    
 
     public void visualizeGraphDemo() {
         Graph<String, DefaultEdge> graph = GraphTypeBuilder

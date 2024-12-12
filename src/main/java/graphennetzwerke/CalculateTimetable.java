@@ -67,13 +67,13 @@ public class CalculateTimetable {
             return;
         }
 
-        // Visualize Graph
-        GraphVisualization graphVisualization = new GraphVisualization();
-        graphVisualization.visualizeGraph(graph);
-
         // Visualize Timetable
         TimetableVisualization timetableVisualization = new TimetableVisualization();
         timetableVisualization.generateTimetable(graph, minColor);
+
+        // Visualize Graph
+        GraphVisualization graphVisualization = new GraphVisualization();
+        graphVisualization.visualizeGraph(graph);
     }
 
     /**
