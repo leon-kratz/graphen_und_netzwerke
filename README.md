@@ -8,7 +8,7 @@ Um die Ergebnisse der Algorithmen anschaulich und leicht auswertbar zu machen, w
 
 Der eingefärbte Graph wird auf einem JFrame visualisiert, was eine intuitive und klare Auswertung der Ergebnisse ermöglicht. Zusätzlich zeigt das "Node Details"-Panel eine Übersicht mit wichtigen Informationen wie Professor, Raum und Semester zu den einzelnen Nodes. Dies liefert alle relevanten Daten zur Analyse des Graphen.
 
-<img src="/images/graph.png" alt="Graph Image" width="600"/>
+<img src="/images/graph.png" alt="Graph Image" width="800"/>
 
 ### Timetable
 
@@ -20,13 +20,13 @@ Jede Farbe mit ihren zugehörigen Nodes wird einem zufälligen freien Block im S
 
 Ein einfacher Stundenplan, der die Knotennummern (Nodes) in die entsprechenden Blöcke einträgt.
 
-<img src="/images/timetable-simple.png" alt="Simple Timetable Image" width="600"/>
+<img src="/images/timetable-simple.png" alt="Simple Timetable Image" width="800"/>
 
 #### Detailed Timetable
 
 Ein detaillierter Stundenplan, der neben Raum und Semester zusätzliche Informationen wie Modulnamen und Professoren anzeigt, um die Lösung praxisnah darzustellen.
 
-<img src="/images/timetable-detailed.png" alt="Detailed Timetable with mock Data Image" width="600"/>
+<img src="/images/timetable-detailed.png" alt="Detailed Timetable with mock Data Image" width="800"/>
 
 ## Setup Project
 
