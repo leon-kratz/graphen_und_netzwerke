@@ -143,10 +143,13 @@ public class TimetableVisualization {
                     }
                     // Füge eine horizontale Linie hinzu, außer beim letzten Modul
                     if (i < nodeNumbers.size() - 1) {
-                        cellContent.append("<hr>").append("<br>");
+                        cellContent.append("<br>").append("<hr>").append("<br>");
                     }
                 } else {
-                    cellContent.append(nodeNumber).append(", ");
+                    cellContent.append(nodeNumber);
+                    if (i < nodeNumbers.size() - 1) {
+                        cellContent.append(", ");
+                    }
                 }               
             }
             cellContent.append("</html>");
