@@ -22,14 +22,16 @@ public class TimetableVisualization {
 
     // Mock Data for Modules and Professors
     String[] moduleNames = {
-            "Mathematik", "Physik", "Informatik", "Chemie", "Biologie",
-            "Psychologie", "Philosophie", "Geschichte", "Kunst", "Musik",
-            "Sport", "Englisch", "Deutsch", "Französisch", "Spanisch",
-            "Italienisch", "Geografie", "Politik", "Soziologie", "Wirtschaft"
+            "Mathematik", "3D Bildverarbeitung", "Programmierung", "Machine Learning", "Parallel Programming",
+            "Big Data", "Distributed Applications", "Cloud Computing", "Process Mining", "Masterseminar",
+            "Computer Graphics", "Englisch", "Speichersysteme", "VR / AR", "Spanisch",
+            "Russisch", "Data Visualization", "Businessanwendungen", "Teamprojekt", "Betriebssysteme",
+            "BWL", "Web-Applikationen", "IT-Sicherheit"
     };
     String[] professorNames = {
             "Prof. Müller", "Prof. Schmidt", "Prof. Schneider", "Prof. Fischer", "Prof. Weber",
-            "Prof. Meyer", "Prof. Wagner", "Prof. Becker", "Prof. Schulz", "Prof. Hoffmann"
+            "Prof. Meyer", "Prof. Wagner", "Prof. Becker", "Prof. Schulz", "Prof. Hoffmann",
+            "Prof. Schott", "Prof. Frank"
     };
 
     public TimetableVisualization() {
@@ -94,7 +96,7 @@ public class TimetableVisualization {
     public void visualizeTimetable(graphennetzwerke.Graph graph, Map<Integer, String> colorToTimeSlot, Map<Integer, List<Integer>> blockModules, boolean detailed) {
         // Tabelle vorbereiten
         String[] columns = new String[days.length + 1];
-        columns[0] = "Time / Day"; // Erste Zeile für die Zeit
+        columns[0] = "Zeit / Tag"; // Erste Zeile für die Zeit
         System.arraycopy(days, 0, columns, 1, days.length);
     
         String[][] data = new String[timeSlots.length][columns.length];
