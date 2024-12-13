@@ -118,7 +118,7 @@ public class TimetableVisualization {
             int col = Arrays.asList(days).indexOf(day) + 1; // +1 wegen der Zeitspalte
     
             // Module für diesen Block
-            List<Integer> nodeNumbers = blockModules.getOrDefault(color, List.of());
+            List<Integer> nodeNumbers = blockModules.getOrDefault(color - 1, List.of());
     
             StringBuilder cellContent = new StringBuilder("<html>");
             for (int i = 0; i < nodeNumbers.size(); i++) {
