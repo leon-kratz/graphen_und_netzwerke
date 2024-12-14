@@ -32,9 +32,9 @@ Ein detaillierter Stundenplan, der neben Raum und Semester zusätzliche Informat
 
 ### VS Code
 
-#### Install Java Extension Pack
+#### Installiere Java Extension Pack
 
-Install the following vs code extension pack:
+Installiere das folgende Java Extension Pack:
 
 Name: Extension Pack for Java\
 Id: vscjava.vscode-java-pack\
@@ -43,13 +43,13 @@ Version: 0.29.0\
 Publisher: Microsoft\
 VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack
 
-#### Install Maven
+#### Installiere Maven
 
-Follow [this Guide](https://phoenixnap.com/kb/install-maven-windows) to install Maven (Windows)
+Folge [dem Guide](https://phoenixnap.com/kb/install-maven-windows), um Maven (Windows) zu installieren
 
 #### Setup Maven
 
-Make sure that you are in the root directory of the repo:
+Stelle sicher, dass du im root directory des Repo's bist:
 
 ```bash
 mvn install
@@ -59,5 +59,13 @@ mvn install
 
 ## Run Project
 
-Select/Open `CalculateTimetable` file and hit `Run Java` in the vs code editor.
+Selektiere und öffne die `CalculateTimetable` Datei und klicke `Run Java` in dem vs code editor.
+
+Das Programm führt standardmäßig alle drei implementierten Algorithmen ([Sequenzieller Algorithmus](/src/main/java/graphennetzwerke/Graph.java#L87), [Johnson Algorithmus](/src/main/java/graphennetzwerke/Graph.java#L112) und [Backtracking](/src/main/java/graphennetzwerke/Graph.java#L167)) auf allen fünf gegebenen Testinstanzen aus. Dabei findet noch keine Visualisierung statt.
+
+Für die Visualisierung muss das Programm entweder mit dem relativen Dateipfad (bspw. ".\Testinstanzen\Instanz1\") als erstes Argument ausgeführt werden oder die Variable [folderPath](/src/main/java/graphennetzwerke/CalculateTimetable.java#L10) aus der CalculateTimetable.java muss händisch gesetzt werden.
+
+## Own Dataset
+
+Neben den fünf Datensetzen haben wir, um die Laufzeit der Algorithmen zu testen, das Programm [ModuleGrouping.java](/Testinstanzen/Instanz6/ModuleGrouping.java) geschrieben, dass in dem Ordner [Instanz6](/Testinstanzen/Instanz6/) gespeichert ist. Dieses Programm erzeugt einen eigenen Datensatz mit 50 Modulen basierend auf dem Aufbau der anderen Datensätze.
 
