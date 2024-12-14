@@ -67,5 +67,5 @@ Für die Visualisierung muss das Programm entweder mit dem relativen Dateipfad (
 
 ## Own Dataset
 
-Neben den fünf Datensetzen haben wir, um die Laufzeit der Algorithmen zu testen, das Programm [ModuleGrouping.java](/Testinstanzen/Instanz6/ModuleGrouping.java) geschrieben, dass in dem Ordner [Instanz6](/Testinstanzen/Instanz6/) gespeichert ist. Dieses Programm erzeugt einen eigenen Datensatz mit 50 Modulen basierend auf dem Aufbau der anderen Datensätze.
+Neben den fünf Datensätzen haben wir, um die Laufzeit der Algorithmen zu testen, das Programm [ModuleGrouping.java](/Testinstanzen/Instanz6/ModuleGrouping.java) geschrieben, dass in dem Ordner [Instanz6](/Testinstanzen/Instanz6/) gespeichert ist. Dieses Programm erzeugt einen eigenen Datensatz mit 50 Modulen basierend auf dem Aufbau der anderen Datensätze.
 
